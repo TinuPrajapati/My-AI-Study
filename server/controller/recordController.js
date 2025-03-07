@@ -15,7 +15,8 @@ export const createRecord = async(req,res)=>{
 
 export const getAllRecords = async(req,res)=>{
     try {
-        const records = await Record.find().populate("testId");
+        const {userId} = req.user;
+        const records = await Record.find({userId}).populate("testId");
         res.status(200).json({records});
     } catch (error) {
         console.log("Error come in getAllRecords route:",error);

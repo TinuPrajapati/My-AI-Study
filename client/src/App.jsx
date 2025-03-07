@@ -8,14 +8,9 @@ import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import TestPage from './pages/TestPage';
 import { Toaster } from "react-hot-toast"
-import useAuthStore from './Store/useAuthStore';
 
 function App() {
-  const { checkAuthUser, authUser } = useAuthStore();
-  
-  useEffect(() => {
-    checkAuthUser();
-  }, [checkAuthUser])
+  const authUser = JSON.parse(localStorage.getItem("authUser"));
 
   return (
     <Router>

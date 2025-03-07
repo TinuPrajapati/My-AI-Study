@@ -30,6 +30,7 @@ const useRecordStore = create((set, get) => ({
         try {
             const res = await Instance.get("/record/all",{withCredentials:true});
             set({ record: res.data.records });
+            console.log(res.data)
         } catch (error) {
             console.log(error.response.data.message)
         } finally {
