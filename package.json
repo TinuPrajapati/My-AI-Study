@@ -1,0 +1,21 @@
+{
+  "name": "mern-mock-ai",
+  "version": "1.0.0",
+  "description": "Welcome to the AI Mock Test Generator! This application leverages the power of Gemini to generate customized mock tests based on a chosen topic and the desired number of questions. Users can take the generated test interactively and view their score upon completion.",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm install --prefix server && npm install --prefix client && npm run build --prefix client",
+    "start": "npm run start --prefix server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TinuPrajapati/MERN-MOCK-AI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TinuPrajapati/MERN-MOCK-AI/issues"
+  },
+  "homepage": "https://github.com/TinuPrajapati/MERN-MOCK-AI#readme"
+}
