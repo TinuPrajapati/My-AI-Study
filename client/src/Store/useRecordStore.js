@@ -13,7 +13,7 @@ const useRecordStore = create((set, get) => ({
         set({ isLoading: true });
 
         try {
-            const res = await Instance.post("/record/create", data);
+            const res = await Instance.post("/record/create", data,{withCredentials:true});
             toast.success(res.data.message)
             get().allRecord();
         } catch (error) {
@@ -28,7 +28,7 @@ const useRecordStore = create((set, get) => ({
         set({ isLoading: true, isError: false, errorMessage: "" });
 
         try {
-            const res = await Instance.get("/record/all");
+            const res = await Instance.get("/record/all",{withCredentials:true});
             set({ record: res.data.records });
         } catch (error) {
             console.log(error.response.data.message)
@@ -40,7 +40,7 @@ const useRecordStore = create((set, get) => ({
     getRecordById: async (id) => {
         set({ isLoading: true });
         try {
-            const res = await Instance.get(`/record/${id}`);
+            const res = await Instance.get(`/record/${id}`,{withCredentials:true});
             console.log(res.data)
             // set({ test: res.data.test });
         } catch (error) {

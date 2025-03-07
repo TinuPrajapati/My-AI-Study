@@ -20,7 +20,7 @@ const TestPage = () => {
 
   const getTest = async (id) => {
     try {
-      const res = await Instance.get(`/test/${id}`);
+      const res = await Instance.get(`/test/${id}`,{withCredentials:true});
       setTest(res.data.test);
       // Initialize timeLeft once test is loaded
       if (res.data.test.timeLimit) {

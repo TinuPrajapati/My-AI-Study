@@ -13,7 +13,7 @@ const useTestStore = create((set, get) => ({
         set({ isLoading: true });
 
         try {
-            const res = await Instance.post("/test/create", data);
+            const res = await Instance.post("/test/create", data,{withCredentials:true});
             toast.success(res.data.message)
             get().show();
         } catch (error) {
@@ -29,7 +29,7 @@ const useTestStore = create((set, get) => ({
         set({ isLoading: true, isError: false, errorMessage: "" });
 
         try {
-            const res = await Instance.get("/test/all");
+            const res = await Instance.get("/test/all",{withCredentials:true});
             set({ test: res.data.tests });
         } catch (error) {
             console.log(error.response.data.message)
@@ -41,7 +41,7 @@ const useTestStore = create((set, get) => ({
     getById: async (id) => {
         set({ isLoading: true });
         try {
-            const res = await Instance.get(`/test/${id}`);
+            const res = await Instance.get(`/test/${id}`,{withCredentials:true});
             // console.log(res.data)
             // set({ test: res.data.test });
         } catch (error) {
