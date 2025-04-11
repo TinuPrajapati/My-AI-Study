@@ -23,8 +23,8 @@ const TestPage = () => {
       const res = await Instance.get(`/test/${id}`,{withCredentials:true});
       setTest(res.data.test);
       // Initialize timeLeft once test is loaded
-      if (res.data.test.timeLimit) {
-        setTimeLeft(res.data.test.timeLimit * 60);
+      if (res.data.test.duration) {
+        setTimeLeft(res.data.test.duration * 60);
       }
     } catch (error) {
       console.log(error.response.data.message)
@@ -118,7 +118,7 @@ const TestPage = () => {
 
   if (isCompleted) {
     return (
-      <div className="min-h-screen bg-gray-200 py-8">
+      <div className="min-h-[80vh] bg-secondary/25 py-8">
         <div className="container mx-auto px-4 max-w-3xl">
           <div className="bg-white rounded-lg shadow-md p-8">
             <div className="flex justify-center mb-6">
@@ -207,7 +207,7 @@ const TestPage = () => {
             </div>
             <div className="flex justify-center">
               <button
-                onClick={() => navigate('/dashboard')}
+                onClick={() => navigate('/quiz')}
                 className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
               >
                 Return to Dashboard
@@ -220,7 +220,7 @@ const TestPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-200 py-8">
+    <div className="min-h-[80vh] bg-secondary/25 py-8">
       <div className="container mx-auto px-4 max-w-3xl">
         <div className="bg-white rounded-lg shadow-md p-6 mb-4">
           <div className="flex justify-between items-center mb-4">

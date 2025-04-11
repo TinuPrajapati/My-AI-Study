@@ -8,21 +8,37 @@ import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import TestPage from './pages/TestPage';
 import { Toaster } from "react-hot-toast"
+import NotesPage from './pages/NotesPage';
+import ChallengePage from './pages/ChallengePage';
+import ProblemPage from './pages/ProblemPage';
+import useAuthStore from './Store/useAuthStore';
+import Loader from './components/Loader';
+import useNotesStore from './Store/useNotesStroe';
+import usePracticeStore from './Store/usePracticeStore';
+import useRecordStore from './Store/useRecordStore';
+import useTestStore from './Store/useTestStore';
 
 function App() {
   const authUser = JSON.parse(localStorage.getItem("authUser"));
+  const {isLoading:authLoader} = useAuthStore();
+  const {notesLoader} = useNotesStore();
+  const {isLoading:problemLoader} = usePracticeStore();
+  const {isLoading:recordLoader} = useRecordStore();
+  const {isLoading:testLoader} = useTestStore();
+  const [theme, setTheme] = React.useState("Emerald");
 
   return (
     <Router>
-      <div className="min-h-[100vh] bg-gray-50 flex flex-col">
-        <Navbar />
+      <div className="min-h-[100vh] flex flex-col " data-theme={theme}>
+        {(authLoader || notesLoader || problemLoader || recordLoader || testLoader) && <Loader/>}
+        <Navbar theme={theme} setTheme={setTheme} />
         <main>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/login" element={authUser == null ? <Login /> : <Navigate to="/dashboard" />} />
-            <Route path="/signup" element={authUser == null ? <Signup /> : <Navigate to="/dashboard" />} />
+            <Route path="/login" element={authUser == null ? <Login /> : <Navigate to="/quiz" />} />
+            <Route path="/signup" element={authUser == null ? <Signup /> : <Navigate to="/quiz" />} />
             <Route
-              path="/dashboard"
+              path="/quiz"
               element={
                 <ProtectedRoute>
                   <Dashboard />
@@ -37,9 +53,33 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/notes"
+              element={
+                <ProtectedRoute>
+                  <NotesPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/practice"
+              element={
+                <ProtectedRoute>
+                  <ChallengePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/problem/:id"
+              element={
+                <ProtectedRoute>
+                  <ProblemPage />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </main>
-        <footer className="bg-sky-400 text-white h-[10vh] flex items-center justify-center">
+        <footer className="bg-secondary text-white text-xl h-[12vh] font-bold flex items-center justify-center">
           <p>&copy; {new Date().getFullYear()} AI Test Platform. All rights reserved.</p>
         </footer>
         <Toaster />

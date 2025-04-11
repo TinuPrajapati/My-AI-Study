@@ -2,18 +2,19 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserPlus, Eye, EyeOff, Mail, Lock, UserRound } from "lucide-react";
 import useAuthStore from "../Store/useAuthStore";
+import Google from "../../public/google.png";
+import Github from "../../public/github.png";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const { register, isLoading: loading } = useAuthStore();
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
-  const { register, isLoading: loading } = useAuthStore();
-
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
 
   // Handle Input Change
   const handleInputChange = (e) => {
@@ -45,26 +46,13 @@ const Signup = () => {
   };
 
   return (
-    <div className="h-[80vh] bg-sky-100 flex flex-col justify-center items-center py-2">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="flex justify-center items-center gap-2">
-          <UserPlus size={30} className="text-sky-400" />
-          <h2 className=" text-center text-2xl font-extrabold text-gray-900">
-            Create a new account
-          </h2>
-        </div>
-        <p className="text-center text-sm text-gray-600 flex gap-1 justify-center">
-          Or
-          <Link
-            to="/login"
-            className="font-medium text-sky-400 hover:text-sky-600"
-          >
-            sign in to your existing account
-          </Link>
-        </p>
-      </div>
+    <div className="min-h-[80vh] bg-secondary/25 flex flex-col justify-center items-center py-4">
+      <h2 className=" text-center text-2xl font-extrabold text-gray-900">
+        Create a new account
+      </h2>
 
       <div className="mt-4 sm:mx-auto sm:w-full sm:max-w-md bg-white py-4 px-8 rounded-lg">
+        {error && <p className="text-red-500 text-center mb-2">{error}</p>}
         <form className="space-y-4" onSubmit={handleSubmit}>
           {/* Name Input */}
           <div>
@@ -80,6 +68,7 @@ const Signup = () => {
                 autoComplete="name"
                 value={formData.name}
                 onChange={handleInputChange}
+                placeholder="Enter Your Name"
                 className="block w-full pl-8 pr-10 py-1 text-[1rem] h-10 border-2 border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sky-500 focus:ring-2 focus:border-none sm:text-sm"
               />
             </div>
@@ -96,7 +85,7 @@ const Signup = () => {
                 id="email"
                 name="email"
                 type="email"
-                autoComplete="email"
+                placeholder="Enter Email"
                 value={formData.email}
                 onChange={handleInputChange}
                 className="block w-full pl-8 pr-10 py-1 text-[1rem] h-10 border-2 border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sky-500 focus:ring-2 focus:border-none sm:text-sm"
@@ -115,7 +104,7 @@ const Signup = () => {
                 id="password"
                 name="password"
                 type={showPassword ? "text" : "password"}
-                autoComplete="new-password"
+                placeholder="Enter password at least 6 character long"
                 value={formData.password}
                 onChange={handleInputChange}
                 className="block w-full pl-8 pr-10 py-1 text-[1rem] h-10 border-2 border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sky-500 focus:ring-2 focus:border-none sm:text-sm"
@@ -149,6 +138,22 @@ const Signup = () => {
             </button>
           </div>
         </form>
+        <Link
+          to="/login"
+          className="font-medium text-lg text-sky-400 hover:text-sky-600 w-full flex justify-center mt-2 border-t-2 pt-1 border-black"
+        >
+          Login to your existing account
+        </Link>
+      </div>
+      <div className="mt-4 flex flex-col items-center gap-3 sm:mx-auto sm:w-full sm:max-w-md">
+        <button className='flex gap-4 justify-center items-center bg-white rounded-md w-full h-12'>
+          <img src={Google} alt="Google Icon" className='size-6' />
+          <p className="block text-[1rem] font-bold text-gray-700">Login with Google</p>
+        </button>
+        <button className='flex gap-4 justify-center items-center bg-white rounded-md w-full h-12'>
+          <img src={Github} alt="Google Icon" className='size-6' />
+          <p className="block text-[1rem] font-bold text-gray-700">Login with Github</p>
+        </button>
       </div>
     </div>
   );

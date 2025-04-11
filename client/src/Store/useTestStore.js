@@ -9,13 +9,14 @@ const useTestStore = create((set, get) => ({
     isError: false,
 
     // Register User
-    generate: async (data) => {
+    generate: async (data,form) => {
         set({ isLoading: true });
 
         try {
             const res = await Instance.post("/test/create", data,{withCredentials:true});
             toast.success(res.data.message)
             get().show();
+            form(false)
         } catch (error) {
             console.log(error.response.data.message)
             toast.error("Try again, Due to some error")

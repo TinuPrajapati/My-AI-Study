@@ -1,13 +1,46 @@
 @import "tailwindcss";
 
-*{
-    font-family: "Nunito", sans-serif;
+@plugin "daisyui" {
+  themes: all;
 }
 
-#roboto{
-    font-family: "Roboto", sans-serif;
+* {
+  font-family: "Nunito", sans-serif;
 }
 
-#shafarik{
-    font-family: "Shafarik", sans-serif;
+#roboto {
+  font-family: "Roboto", sans-serif;
+}
+
+#shafarik {
+  font-family: "Shafarik", sans-serif;
+}
+
+@theme {
+  --color-primary-50: #f0f9ff;
+  --color-primary-100: #e0f2fe;
+  --color-primary-200: #bae6fd;
+  --color-primary-300: #7dd3fc;
+  --color-primary-400: #38bdf8;
+  --color-primary-500: #0ea5e9;
+  --color-primary-600: #0284c7;
+  --color-primary-700: #0369a1;
+  --color-primary-800: #075985;
+  --color-primary-900: #0c4a6e;
+  --animate-gradient: gradient 8s linear infinite;
+  --animate-bounce-slow: bounce 3s linear infinite;
+  --animate-bounce: bounce 2s infinite;
+  --animate-loading: loading 4s ease-in-out infinite;
+}
+
+@keyframes loading {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }

@@ -22,6 +22,7 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mern-mock-ai": "file:..",
-    "mongoose": "^8.11.0"
+    "mongoose": "^8.11.0",
+    "replicate": "^1.0.1"
   }
 }

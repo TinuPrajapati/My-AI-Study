@@ -8,6 +8,8 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./routes/authroutes.js";
 import testRouter from "./routes/testRoutes.js";
 import recordRouter from "./routes/recordRoutes.js";
+import notesRouter from "./routes/notesRoutes.js";
+import problemRouter from "./routes/problemRoutes.js";
 import path from "path";
 
 const app = express();
@@ -37,6 +39,8 @@ main();
 app.use("/api/auth", authRoutes);
 app.use("/api/test", testRouter);
 app.use("/api/record", recordRouter);
+app.use("/api/notes", notesRouter);
+app.use("/api/problems", problemRouter);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../client/dist")));

@@ -1,17 +1,16 @@
 import mongoose from "mongoose";
 
-const UserSchema = new mongoose.Schema(
+const noteSchema = new mongoose.Schema(
   {
-    name: {
+    topic: {
       type: String,
       required: true,
     },
-    email: {
+    notes: {
       type: String,
-      unique: true,
       required: true,
     },
-    password: {
+    user: {
       type: String,
       required: true,
     },
@@ -21,4 +20,5 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
-export const User = mongoose.model("User", UserSchema);
+const Notes = mongoose.model("Notes", noteSchema);
+export default Notes;
