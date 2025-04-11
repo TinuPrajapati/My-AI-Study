@@ -118,7 +118,7 @@ const TestPage = () => {
 
   if (isCompleted) {
     return (
-      <div className="min-h-[80vh] bg-secondary/25 py-8">
+      <div className="min-h-[80vh] bg-secondary/25 text-black py-8">
         <div className="container mx-auto px-4 max-w-3xl">
           <div className="bg-white rounded-lg shadow-md p-8">
             <div className="flex justify-center mb-6">
@@ -220,7 +220,7 @@ const TestPage = () => {
   }
 
   return (
-    <div className="min-h-[80vh] bg-secondary/25 py-8">
+    <div className="min-h-[80vh] bg-secondary/25 text-black py-8">
       <div className="container mx-auto px-4 max-w-3xl">
         <div className="bg-white rounded-lg shadow-md p-6 mb-4">
           <div className="flex justify-between items-center mb-4">

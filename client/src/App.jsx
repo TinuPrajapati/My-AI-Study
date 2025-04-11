@@ -25,7 +25,7 @@ function App() {
   const {isLoading:problemLoader} = usePracticeStore();
   const {isLoading:recordLoader} = useRecordStore();
   const {isLoading:testLoader} = useTestStore();
-  const [theme, setTheme] = React.useState("Emerald");
+  const [theme, setTheme] = React.useState("valentine");
 
   return (
     <Router>
