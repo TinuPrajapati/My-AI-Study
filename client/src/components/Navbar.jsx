@@ -54,7 +54,7 @@ const Navbar = ({ theme, setTheme }) => {
     <nav className="bg-secondary text-white shadow-md flex justify-between items-center h-[10vh] px-5 py-1 overflow-x-hidden">
       <Link to="/" className="flex items-center gap-2 text-2xl font-bold">
         <img src={Logo} alt="Logo" className="w-8 h-8" />
-        <span >AI Test Platform</span>
+        <span >My AI Study</span>
       </Link>
 
       <div className="flex items-center gap-2 h-full text-lg">
