@@ -125,10 +125,10 @@ const Login = () => {
           <img src={Google} alt="Google Icon" className='size-6' />
           <p className="block text-[1rem] font-bold text-gray-700">Login with Google</p>
         </button>
-        <button className='flex gap-4 justify-center items-center bg-white rounded-md w-full h-12'>
+        {/* <button className='flex gap-4 justify-center items-center bg-white rounded-md w-full h-12'>
           <img src={Github} alt="Google Icon" className='size-6' />
           <p className="block text-[1rem] font-bold text-gray-700">Login with Github</p>
-        </button>
+        </button> */}
       </div>
     </div>
   );
