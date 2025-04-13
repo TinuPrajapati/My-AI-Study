@@ -1,5 +1,4 @@
 import Problem from "../models/problemModel.js";
-import {User} from "../models/userModels.js";
 import checkTest from "../utils/checkProblem.js";
 import generateTest from "../utils/generateProblem.js";
 
@@ -7,9 +6,8 @@ const createProblem = async (req, res) => {
   try {
     const { userId } = req.user;
     const { topic, level, language } = req.body;
-    const user = await User.findById(userId);
     const problem = await generateTest(req.body);
-    const newProblem = await new Problem({ ...problem,topic, level, language, createdBy: user.name });
+    const newProblem = await new Problem({ ...problem,topic, level, language, createdBy: userId });
     newProblem.save();
     res.status(201).json({ message: "Problem Create Successfully" });
   } catch (error) {
@@ -19,7 +17,8 @@ const createProblem = async (req, res) => {
 };
 const getAllProblems = async (req, res) => {
   try {
-    const problems = await Problem.find();
+    const { userId } = req.user;
+    const problems = await Problem.find({createdBy: userId});
     res.status(200).json({ problems });
   } catch (error) {
     console.log("Error come in createProblem route:", error);

@@ -1,5 +1,4 @@
 import Test from "../models/testModel.js";
-import { User } from "../models/userModels.js";
 import { generateQuestions } from "../utils/generateQuestions.js";
 
 export const createTest = async (req, res) => {
@@ -8,12 +7,11 @@ export const createTest = async (req, res) => {
 
   try {
     const obj = await generateQuestions(topic, number, level);
-    const user = await User.findById(userId);
     const test = new Test({
       title: topic,
       questions: obj.questions,
       description: obj.description,
-      createdBy: user.name,
+      createdBy: userId,
       level,
       duration,
       number
@@ -28,7 +26,8 @@ export const createTest = async (req, res) => {
 
 export const getAllTests = async (req, res) => {
   try {
-    const tests = await Test.find();
+    const { userId } = req.user;
+    const tests = await Test.find({createdBy: userId});
     res.status(200).json({ tests });
   } catch (error) {
     console.log("Error come in getAllTests route:", error);

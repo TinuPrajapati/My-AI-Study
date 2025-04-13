@@ -4,6 +4,8 @@ import { UserPlus, Eye, EyeOff, Mail, Lock, UserRound } from "lucide-react";
 import useAuthStore from "../Store/useAuthStore";
 import Google from "../../public/google.png";
 import Github from "../../public/github.png";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "../api/Firebase";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -24,6 +26,18 @@ const Signup = () => {
 
   const toggleShowPassword = () => {
     setShowPassword((prev) => !prev);
+  };
+
+  const googleSignUp = async () => {
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    const { displayName, email, photoURL } = result.user;
+    const password = Math.random().toString(36).slice(2);
+    register({
+      name: displayName,
+      email: email,
+      password: password
+    }, navigate)
   };
 
   const handleSubmit = async (e) => {
@@ -146,7 +160,7 @@ const Signup = () => {
         </Link>
       </div>
       <div className="mt-4 flex flex-col items-center gap-3 sm:mx-auto sm:w-full sm:max-w-md">
-        <button className='flex gap-4 justify-center items-center bg-white rounded-md w-full h-12'>
+        <button onClick={googleSignUp} className='flex gap-4 justify-center items-center bg-white rounded-md w-full h-12'>
           <img src={Google} alt="Google Icon" className='size-6' />
           <p className="block text-[1rem] font-bold text-gray-700">Login with Google</p>
         </button>

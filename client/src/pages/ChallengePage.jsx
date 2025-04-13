@@ -12,6 +12,9 @@ function ChallengePage() {
   const [language, setlanguage] = useState('All');
   const [level, setlevel] = useState('All');
 
+  const topics = Array.from(new Set(problems.map(problem => problem.topic)));
+  const languages = Array.from(new Set(problems.map(problem => problem.language)));
+
   const PROBLEM_TOPICS = [
     "Arrays",
     "Strings",
@@ -81,7 +84,7 @@ function ChallengePage() {
             onChange={e => settopic(e.target.value)}
           >
             <option value="All">All Topics</option>
-            {PROBLEM_TOPICS.map(topic => (
+            {topics.map(topic => (
               <option key={topic} value={topic}>{topic}</option>
             ))}
           </select>
@@ -99,8 +102,8 @@ function ChallengePage() {
             onChange={e => setlanguage(e.target.value)}
           >
             <option value="All">All Languages</option>
-            {PROGRAMMING_LANGUAGES.map(lang => (
-              <option key={lang} value={lang}>{lang}</option>
+            {languages.map(lang => (
+              <option key={lang} value={lang}>{lang.charAt(0).toUpperCase() + lang.slice(1)}</option>
             ))}
           </select>
         </motion.div>
@@ -146,7 +149,7 @@ function ChallengePage() {
             </p>
             <Link
               to={`/problem/${problem._id}`}
-              className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-secondary font-bold hover:text-blue-500 w-[60%]"
+              className="text-neutral font-bold hover:text-blue-500 w-[60%]"
             >
               {problem.title}
             </Link>

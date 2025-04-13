@@ -42,7 +42,8 @@ const TestSchema = new mongoose.Schema(
       required: [true, "Please add a level"],
     },
     createdBy: {
-      type: String,
+      type:mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: [true, "Please add a User Name"],
     },
     duration: {

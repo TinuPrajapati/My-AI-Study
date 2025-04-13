@@ -4,6 +4,8 @@ import { LogIn, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import useAuthStore from '../Store/useAuthStore';
 import Google from "../../public/google.png";
 import Github from "../../public/github.png";
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { auth } from '../api/Firebase';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -12,6 +14,18 @@ const Login = () => {
   const [error, setError] = useState('');
   const { login, isLoading } = useAuthStore();
   const navigate = useNavigate();
+
+  const googleLogin = async () => {
+    const porvider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, porvider);
+    const { displayName, email, photoURL } = result.user;
+    const password = Math.random().toString(36).slice(2);
+    login({
+      email: email,
+      password: password,
+      login: "Google"
+    }, navigate); 
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,7 +41,7 @@ const Login = () => {
       return;
     }
 
-    login({ email, password }, navigate);
+    login({ email, password,login:"manually" }, navigate);
   };
 
   const toggleShowPassword = () => {
@@ -107,7 +121,7 @@ const Login = () => {
         </Link>
       </div>
       <div className="mt-4 flex flex-col items-center gap-3 sm:mx-auto sm:w-full sm:max-w-md">
-        <button className='flex gap-4 justify-center items-center bg-white rounded-md w-full h-12'>
+        <button onClick={googleLogin} className='flex gap-4 justify-center items-center bg-white rounded-md w-full h-12'>
           <img src={Google} alt="Google Icon" className='size-6' />
           <p className="block text-[1rem] font-bold text-gray-700">Login with Google</p>
         </button>

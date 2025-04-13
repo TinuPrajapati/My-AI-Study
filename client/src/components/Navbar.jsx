@@ -64,7 +64,7 @@ const Navbar = ({ theme, setTheme }) => {
           Theme
         </button>
         {/* theme dropdown */}
-        <div ref={dropdownRef} className={`absolute z-40 top-16 p-2 ${show ? "opacity-100" : " opacity-0"} space-y-1  duration-500 w-[18vw] h-[50vh] overflow-y-auto rounded bg-secondary/50 backdrop-blur-3xl`}>
+        <div ref={dropdownRef} className={`absolute z-40 top-16 p-2 ${show ? "opacity-100 pointer-events-auto" : " opacity-0 pointer-events-none"} space-y-1  duration-500 w-[18vw] h-[50vh] overflow-y-auto rounded bg-secondary/50 backdrop-blur-3xl`}>
           {THEMES.map((t, index) => (
             <button
               key={index}

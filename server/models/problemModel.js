@@ -5,7 +5,6 @@ const problem = new mongoose.Schema(
     topic: { type: String, required: true },
     level: { type: String, required: true },
     language: { type: String, required: true },
-    createdBy: { type: String, required: true },
     title: {
       type: String,
       required: [true, "Please add Test Title"],
@@ -20,14 +19,21 @@ const problem = new mongoose.Schema(
     },
     test_cases: [
       {
-        Input:[{
-          type:String
-        }],
-        Expected:{
-          type:String
-        }
+        Input: [
+          {
+            type: String,
+          },
+        ],
+        Expected: {
+          type: String,
+        },
       },
     ],
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   {
     timestamps: true,

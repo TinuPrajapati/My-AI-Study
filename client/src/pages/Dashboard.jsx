@@ -14,11 +14,17 @@ const Dashboard = () => {
   const { authUser } = useAuthStore();
   const { show, test, getById } = useTestStore();
   const { record, allRecord } = useRecordStore();
+  const [level, setLevel] = useState("All");
 
   const handleStartTest = (testId) => {
     getById(testId);
     navigate(`/test/${testId}`);
   };
+
+  const filterTestsByLevel = test.filter(problem => {
+    const difficultyMatch = level === 'All' || problem.level === level;
+    return difficultyMatch;
+  });
 
   // Calculate stats
   const totalTestsTaken = record.length;
@@ -101,20 +107,39 @@ const Dashboard = () => {
           transition={{ duration: 1, delay: 2.5 }}
           className='flex justify-between items-center mb-4 bg-white rounded-md shadow-md shadow-accent/50 py-2 px-4'>
           <h2 className="text-xl font-bold text-primary">Available Tests</h2>
-          <button
-            onClick={() => setShowForm(true)}
-            className="flex items-center justify-center w-full md:w-auto px-6 py-1 border-2 border-secondary text-secondary font-bold text-lg rounded-md hover:bg-secondary hover:text-white transition-colors active:scale-90 duration-200"
-          >
-            <PlusCircle size={25} className="mr-2" />
-            Generate New Test
-          </button>
+          <div className='flex gap-4 items-center'>
+
+            <button
+              onClick={() => setShowForm(true)}
+              className="flex items-center justify-center w-full md:w-auto px-6 py-1 border-2 border-secondary text-secondary font-bold text-lg rounded-md hover:bg-secondary hover:text-white transition-colors active:scale-90 duration-200"
+            >
+              <PlusCircle size={25} className="mr-2" />
+              Generate New Test
+            </button>
+            <motion.div
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 1, delay: 2 }}
+            >
+              <select
+                className="w-40 px-4 h-10 border-2 border-secondary rounded-md outline-none focus:ring-2 focus:ring-accent focus:border-none text-black"
+                value={level}
+                onChange={e => setLevel(e.target.value)}
+              >
+                <option value="All">All Level</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+              </select>
+            </motion.div>
+          </div>
         </motion.div>
 
-        {test.length === 0 ? (
+        {filterTestsByLevel.length === 0 ? (
           <motion.p
             initial={{ x: -40, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 1, delay:  2.5 }}
+            transition={{ duration: 1, delay: 2.5 }}
             className="bg-white rounded-md shadow-md shadow-accent/50 p-6 text-center text-xl font-bold text-accent"
           >
             No tests available. Generate your first test!

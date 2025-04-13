@@ -1,14 +1,12 @@
 import Notes from "../models/notesModel.js";
-import {User} from "../models/userModels.js";
 import GenerateNotes from "../utils/generateNotes.js";
 
 const createNote = async (req, res) => {
     try {
         const {userId} = req.user;
         const {topic} = req.body;
-        const userDetails = await User.findById(userId);
         const notes = await GenerateNotes(topic);
-        const note = await new Notes({user: userDetails.name, topic, notes});
+        const note = await new Notes({user: userId, topic, notes});
         note.save();
         res.status(201).json({ message: "Note Create Successfully" });
     } catch (error) {
@@ -20,8 +18,7 @@ const createNote = async (req, res) => {
 const getAllNotes = async (req, res) => {
     try{
         const {userId} = req.user;
-        const userDetails = await User.findById(userId);
-        const notes = await Notes.find({user: userDetails.name});
+        const notes = await Notes.find({user: userId});
         res.status(200).json({notes});
     } catch (error) {
         res.status(500).json({ message: "Internal Server Error" });
