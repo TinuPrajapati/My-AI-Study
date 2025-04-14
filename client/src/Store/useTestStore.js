@@ -3,8 +3,8 @@ import Instance from "../api/Instance";
 import toast from "react-hot-toast";
 
 const useTestStore = create((set, get) => ({
-    test: [], // Persist user session
-    singleTest: {},
+    Tests: [], // Persist user session
+    test: null,
     isLoading: false,
     isError: false,
 
@@ -31,7 +31,7 @@ const useTestStore = create((set, get) => ({
 
         try {
             const res = await Instance.get("/test/all",{withCredentials:true});
-            set({ test: res.data.tests });
+            set({ Tests: res.data.tests });
         } catch (error) {
             console.log(error.response.data.message)
         } finally {
@@ -39,12 +39,11 @@ const useTestStore = create((set, get) => ({
         }
     },
 
-    getById: async (id) => {
+    getTest: async (id) => {
         set({ isLoading: true });
         try {
             const res = await Instance.get(`/test/${id}`,{withCredentials:true});
-            // console.log(res.data)
-            // set({ test: res.data.test });
+            set({ test: res.data });
         } catch (error) {
             console.log(error.response.data.message)
         } finally {

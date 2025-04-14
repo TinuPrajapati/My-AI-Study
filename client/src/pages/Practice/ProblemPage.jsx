@@ -3,9 +3,9 @@ import { motion } from "framer-motion";
 import { useParams } from 'react-router-dom';
 import Editor from '@monaco-editor/react';
 import { Play, Lightbulb } from 'lucide-react';
-import usePracticeStore from '../Store/usePracticeStore';
-import SuccessAlert from "../components/SuccessAlert";
-import ErrorAlert from '../components/ErrorAlert';
+import usePracticeStore from '../../Store/usePracticeStore';
+import SuccessAlert from "../../components/SuccessAlert";
+import ErrorAlert from '../../components/ErrorAlert';
 
 export default function ProblemPage() {
     const { id } = useParams();

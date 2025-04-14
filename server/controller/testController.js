@@ -14,7 +14,7 @@ export const createTest = async (req, res) => {
       createdBy: userId,
       level,
       duration,
-      number
+      number,
     });
     await test.save();
     res.status(201).json({ message: "Test Create Successfully" });
@@ -27,7 +27,7 @@ export const createTest = async (req, res) => {
 export const getAllTests = async (req, res) => {
   try {
     const { userId } = req.user;
-    const tests = await Test.find({createdBy: userId});
+    const tests = await Test.find({ createdBy: userId });
     res.status(200).json({ tests });
   } catch (error) {
     console.log("Error come in getAllTests route:", error);
@@ -39,7 +39,7 @@ export const getTestById = async (req, res) => {
   const { id } = req.params;
   try {
     const test = await Test.findById(id);
-    res.status(200).json({ test });
+    res.status(200).json(test);
   } catch (error) {
     console.log("Error come in getTestById route:", error);
     res.status(500).json({ message: "Internal Server Error" });

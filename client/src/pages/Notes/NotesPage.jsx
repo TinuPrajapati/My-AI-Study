@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Sun, Moon, Sparkles, Send, Bot } from 'lucide-react';
-import ShowNotes from '../components/ShowNotes';
-import useNotesStore from '../Store/useNotesStroe';
+import { Sparkles, Send, Bot } from 'lucide-react';
+import ShowNotes from '../../components/ShowNotes';
+import useNotesStore from '../../Store/useNotesStroe';
 
 function NotesPage() {
     const { createNotes, notesLoader, getAllNotes, notes } = useNotesStore();

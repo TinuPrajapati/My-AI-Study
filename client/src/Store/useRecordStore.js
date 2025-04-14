@@ -3,8 +3,8 @@ import Instance from "../api/Instance";
 import toast from "react-hot-toast";
 
 const useRecordStore = create((set, get) => ({
-    record: [], // Persist user session
-    singleTest: {},
+    records: [],
+    record: {}, // Persist user session
     isLoading: false,
     isError: false,
 
@@ -28,7 +28,7 @@ const useRecordStore = create((set, get) => ({
         set({ isLoading: true, isError: false, errorMessage: "" });
         try {
             const res = await Instance.get("/record/all",{withCredentials:true});
-            set({ record: res.data.records });
+            set({ records: res.data.records });
         } catch (error) {
             console.log(error.response.data.message)
         } finally {
@@ -40,8 +40,7 @@ const useRecordStore = create((set, get) => ({
         set({ isLoading: true });
         try {
             const res = await Instance.get(`/record/${id}`,{withCredentials:true});
-            console.log(res.data)
-            // set({ test: res.data.test });
+            set({ record: res.data });
         } catch (error) {
             console.log(error.response.data.message)
         } finally {

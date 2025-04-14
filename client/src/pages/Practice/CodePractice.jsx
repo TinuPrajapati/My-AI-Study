@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Bot, Plus } from 'lucide-react';
-import CreateProblem from '../components/CreateProblem';
-import usePracticeStore from '../Store/usePracticeStore';
+import CreateProblem from '../../components/CreateProblem';
+import usePracticeStore from '../../Store/usePracticeStore';
 
-function ChallengePage() {
+function CodePracticePage() {
   const [show, setShow] = useState(false);
   const { problems, getProblems } = usePracticeStore();
   const [topic, settopic] = useState('All');
@@ -56,7 +56,7 @@ function ChallengePage() {
           whileHover={{ scale: 1.05 }}
         >
           <Bot className={`w-8 h-8 text-secondary`} />
-          <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent">
+          <h1 id="rock-salt" className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent">
             Code Problems By AI
           </h1>
         </motion.div>
@@ -174,4 +174,4 @@ function ChallengePage() {
   );
 }
 
-export default ChallengePage;
+export default CodePracticePage;

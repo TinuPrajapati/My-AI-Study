@@ -1,36 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BookOpen, Clock, CheckCircle, PlusCircle, CheckCircle2, Notebook } from 'lucide-react';
 import { motion } from "framer-motion";
-import useAuthStore from '../Store/useAuthStore';
-import useTestStore from '../Store/useTestStore';
-import useRecordStore from '../Store/useRecordStore';
-import GenerateTest from '../components/GenerateTest';
-import QuizHistory from '../components/QuizHistory';
+import useAuthStore from '../../Store/useAuthStore';
+import useTestStore from '../../Store/useTestStore';
+import useRecordStore from '../../Store/useRecordStore';
+import GenerateTest from '../../components/GenerateTest';
+import QuizHistory from '../../components/QuizHistory';
 
-const Dashboard = () => {
+const QuizPage = () => {
   const navigate = useNavigate();
   const [showForm, setShowForm] = useState(false);
   const { authUser } = useAuthStore();
-  const { show, test, getById } = useTestStore();
-  const { record, allRecord } = useRecordStore();
+  const { show, Tests } = useTestStore();
+  const { records, allRecord } = useRecordStore();
   const [level, setLevel] = useState("All");
-
-  const handleStartTest = (testId) => {
-    getById(testId);
-    navigate(`/test/${testId}`);
-  };
-
-  const filterTestsByLevel = test.filter(problem => {
+  const filterTestsByLevel = Tests.filter(problem => {
     const difficultyMatch = level === 'All' || problem.level === level;
     return difficultyMatch;
   });
 
   // Calculate stats
-  const totalTestsTaken = record.length;
+  const totalTestsTaken = records.length;
   const averageScore =
     totalTestsTaken > 0
-      ? record.reduce(
+      ? records.reduce(
         (sum, result) =>
           sum + ((result.score / result.testId?.number) * 100),
         0
@@ -71,7 +65,7 @@ const Dashboard = () => {
             <BookOpen size={24} className="text-primary mr-2" />
             <h2 className="text-xl font-semibold text-secondary">Available Tests</h2>
           </div>
-          <p className="text-3xl font-bold text-accent">{test.length}</p>
+          <p className="text-3xl font-bold text-accent">{Tests.length}</p>
         </motion.div>
 
         <motion.div
@@ -83,7 +77,7 @@ const Dashboard = () => {
             <CheckCircle size={24} className="text-primary mr-2" />
             <h2 className="text-xl font-semibold text-secondary">Tests Completed</h2>
           </div>
-          <p className="text-3xl font-bold text-accent">{record.length}</p>
+          <p className="text-3xl font-bold text-accent">{records.length}</p>
         </motion.div>
 
         <motion.div
@@ -146,53 +140,47 @@ const Dashboard = () => {
           </motion.p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {test.map((test, index) => (
+            {Tests.map((test, index) => (
               <motion.div
                 key={test._id}
                 initial={{ x: -40, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 1, delay: index + 2 }}
-                className="overflow-hidden bg-white rounded-md shadow-md shadow-accent/50"
+                className="bg-white rounded-md shadow-md shadow-accent/50 px-6 py-4 h-[50vh] flex flex-col gap-2"
               >
-                {/* <img
-                  src={test.image}
-                  alt={test.title}
-                  className="object-cover w-full h-48"
-                /> */}
-                <div className="p-6">
-                  <div className="flex items-start justify-between mb-2">
-                    <h3 className="text-xl font-bold text-primary">
-                      {test.title}
-                    </h3>
-                    <span
-                      className={`px-2 py-1 rounded text-sm font-semibold ${test.level === "Beginner"
-                        ? "bg-green-100 text-green-800"
-                        : test.level === "Intermediate"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-red-100 text-red-800"
-                        }`}
-                    >
-                      {test.level}
-                    </span>
-                  </div>
-                  <p className="mb-4 text-gray-600">{test.description}</p>
-                  <div className="flex items-center justify-between mb-4 text-sm text-gray-500">
-                    <span className="flex items-center">
-                      <Clock className="w-4 h-4 mr-1 text-accent" />
-                      {test.duration} mins
-                    </span>
-                    <span className="flex items-center">
-                      <Notebook className="w-4 h-4 mr-1 text-accent" />
-                      {test.number} questions
-                    </span>
-                  </div>
-                  <button
-                    onClick={() => handleStartTest(test._id)}
-                    className="w-[50%] px-4 py-1 text-white transition-colors font-bold text-lg bg-secondary rounded-md hover:bg-indigo-700"
+                <div className="flex items-start justify-between h-[15%]">
+                  <h3 className="text-xl font-bold text-primary">
+                    {test.title}
+                  </h3>
+                  <span
+                    className={`px-2 py-1 rounded text-sm font-semibold ${test.level === "Beginner"
+                      ? "bg-green-100 text-green-800"
+                      : test.level === "Intermediate"
+                        ? "bg-yellow-100 text-yellow-800"
+                        : "bg-red-100 text-red-800"
+                      }`}
                   >
-                    Start Test
-                  </button>
+                    {test.level}
+                  </span>
                 </div>
+                <p className="mb-2 text-gray-600 h-[60%]">{test.description}</p>
+                <div className="flex items-center justify-between mb-4 text-sm text-gray-500 h-[10%]">
+                  <span className="flex items-center">
+                    <Clock className="w-4 h-4 mr-1 text-accent" />
+                    {test.duration} mins
+                  </span>
+                  <span className="flex items-center">
+                    <Notebook className="w-4 h-4 mr-1 text-accent" />
+                    {test.number} questions
+                  </span>
+                </div>
+                <Link
+                  to={`/test/${test._id}`}
+                  onScroll={() => window.scrollTo(0, 0)}
+                  className="w-[40%] h-[15%] py-1 text-white text-center transition-colors font-bold text-lg bg-accent rounded-md hover:bg-indigo-700"
+                >
+                  Start Test
+                </Link>
               </motion.div>
             ))}
           </div>
@@ -200,9 +188,9 @@ const Dashboard = () => {
       </div>
 
       {/* Test History */}
-      <QuizHistory record={record} />
+      <QuizHistory record={records} />
     </div>
   );
 };
 
-export default Dashboard;
+export default QuizPage;

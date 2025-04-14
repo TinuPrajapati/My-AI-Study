@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Clock, Award, Eye, Calendar } from 'lucide-react';
+import { Clock, Award, Eye, Calendar, CircleCheck } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 function QuizHistory({ record }) {
     return (
@@ -29,41 +30,43 @@ function QuizHistory({ record }) {
                             transition={{ duration: 1, delay: index + 3 }}
                             className="bg-white border-l-4 border-secondary rounded-md px-4 py-2 transition-all duration-200 hover:shadow-md"
                         >
-                            <div className="flex items-center justify-between flex-wrap gap-4">
-                                <div>
-                                    <div className="flex items-center gap-3">
-                                        <h3 className="text-xl font-semibold text-gray-900">
-                                            {quiz?.testId?.title}
-                                        </h3>
-                                        <span className={`px-3 py-1 rounded-md text-sm font-medium ${quiz?.testId?.level === 'Advanced' ? 'bg-red-100 text-red-700' :
-                                            quiz?.testId?.level === 'Intermediate' ? 'bg-yellow-100 text-yellow-700' :
-                                                'bg-green-100 text-green-700'
-                                            }`}>
-                                            {quiz?.testId?.level}
-                                        </span>
-                                    </div>
-
-                                    <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                        <div className="flex items-center text-gray-600">
-                                            <Award className="w-5 h-5 mr-2 text-primary" />
-                                            <span>Score: {quiz.score}</span>
-                                        </div>
-                                        <div className="flex items-center text-gray-600">
-                                            <Clock className="w-5 h-5 mr-2 text-primary" />
-                                            <span>{quiz.score}/{quiz.testId?.number} Correct</span>
-                                        </div>
-                                        <div className="flex items-center text-gray-600">
-                                            <Calendar className="w-5 h-5 mr-2 text-primary" />
-                                            <span>{new Date(quiz.createdAt).toLocaleDateString("en-GB")}</span>
-                                        </div>
-                                    </div>
+                            <div className="flex items-center justify-between w-full">
+                                <div className="flex items-center gap-3">
+                                    <h3 className="text-xl font-semibold text-gray-900">
+                                        {quiz?.testId?.title}
+                                    </h3>
+                                    <span className={`px-3 py-1 rounded-md text-sm font-medium ${quiz?.testId?.level === 'Advanced' ? 'bg-red-100 text-red-700' :
+                                        quiz?.testId?.level === 'Intermediate' ? 'bg-yellow-100 text-yellow-700' :
+                                            'bg-green-100 text-green-700'
+                                        }`}>
+                                        {quiz?.testId?.level}
+                                    </span>
                                 </div>
-
-                                <button
-                                    className="px-4 py-2 bg-primary/80 text-white rounded-md hover:bg-primary/80 transition-colors"
+                                <Link
+                                    to={`/quiz_result/${quiz._id}`}
+                                    className="font-bold hover:border-b-2 duration-200"
                                 >
                                     View
-                                </button>
+                                </Link>
+                            </div>
+
+                            <div className="mt-3 flex items-center justify-between pr-6">
+                                <div className="flex items-center text-gray-600">
+                                    <Award className="w-5 h-5 mr-2 text-primary" />
+                                    <span>Score: {quiz.score}</span>
+                                </div>
+                                <div className="flex items-center text-gray-600">
+                                    <Clock className="w-5 h-5 mr-2 text-primary" />
+                                    <span>{quiz?.completeTime} {quiz?.completeTime > 1 ? 'minutes' : 'sec'}</span>
+                                </div>
+                                <div className="flex items-center text-gray-600">
+                                    <CircleCheck className="w-5 h-5 mr-2 text-primary" />
+                                    <span>{quiz.score}/{quiz.testId?.number} Correct</span>
+                                </div>
+                                <div className="flex items-center text-gray-600">
+                                    <Calendar className="w-5 h-5 mr-2 text-primary" />
+                                    <span>{new Date(quiz.createdAt).toLocaleDateString("en-GB")}</span>
+                                </div>
                             </div>
                         </motion.div>
                     ))

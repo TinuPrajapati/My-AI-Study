@@ -12,10 +12,20 @@ const recordSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    answers: [
+      {
+        type: Number,
+        required: true,
+      },
+    ],
+    completeTime: {
+      type: Number,
+      required: true,
+    },
     score: {
       type: Number,
       required: true,
-    }
+    },
   },
   {
     timestamps: true,

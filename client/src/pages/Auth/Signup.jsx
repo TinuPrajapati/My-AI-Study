@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserPlus, Eye, EyeOff, Mail, Lock, UserRound } from "lucide-react";
-import useAuthStore from "../Store/useAuthStore";
-import Google from "../../public/google.png";
-import Github from "../../public/github.png";
+import useAuthStore from "../../Store/useAuthStore";
+import Google from "../../../public/google.png";
+import Github from "../../../public/github.png";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../api/Firebase";
+import { auth } from "../../api/Firebase";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -60,21 +60,21 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-[80vh] bg-secondary/25 flex flex-col justify-center items-center py-4">
-      <h2 className=" text-center text-2xl font-extrabold text-gray-900">
+    <div className="min-h-[80vh] bg-secondary/25 flex flex-col justify-center items-center py-10">
+      <h2 className="text-center text-3xl font-bold text-primary">
         Create a new account
       </h2>
 
-      <div className="mt-4 sm:mx-auto sm:w-full sm:max-w-md bg-white py-4 px-8 rounded-lg">
+      <div className="mt-4 w-[80%] sm:w-[40%]  bg-white py-4 px-8 rounded-md">
         {error && <p className="text-red-500 text-center mb-2">{error}</p>}
-        <form className="space-y-4" onSubmit={handleSubmit}>
+        <form className="space-y-4 flex flex-col items-center" onSubmit={handleSubmit}>
           {/* Name Input */}
-          <div>
-            <label htmlFor="name" className="block text-[1rem] font-semibold pl-2 text-gray-700">
+          <div className="w-full">
+            <label htmlFor="name" className="block text-[1rem] font-semibold pl-2 text-primary">
               Full name
             </label>
             <div className="relative flex items-center">
-              <UserRound size={20} className="absolute left-2 text-sky-400" />
+              <UserRound size={20} className="absolute left-2 text-accent" />
               <input
                 id="name"
                 name="name"
@@ -83,18 +83,18 @@ const Signup = () => {
                 value={formData.name}
                 onChange={handleInputChange}
                 placeholder="Enter Your Name"
-                className="block w-full pl-8 pr-10 py-1 text-[1rem] h-10 border-2 border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sky-500 focus:ring-2 focus:border-none sm:text-sm"
+                className="block w-full text-black font-semibold pl-8 pr-3 py-1 text-[1rem] h-10 border-2 border-secondary rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:ring-2 focus:border-none sm:text-sm"
               />
             </div>
           </div>
 
           {/* Email Input */}
-          <div>
-            <label htmlFor="email" className="block text-[1rem] font-semibold pl-2 text-gray-700">
+          <div className="w-full">
+            <label htmlFor="email" className="block text-[1rem] font-semibold pl-2 text-primary">
               Email address
             </label>
             <div className="relative flex items-center">
-              <Mail size={20} className="absolute left-2 text-sky-400" />
+              <Mail size={20} className="absolute left-2 text-accent" />
               <input
                 id="email"
                 name="email"
@@ -102,18 +102,18 @@ const Signup = () => {
                 placeholder="Enter Email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className="block w-full pl-8 pr-10 py-1 text-[1rem] h-10 border-2 border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sky-500 focus:ring-2 focus:border-none sm:text-sm"
+                className="block w-full text-black font-semibold pl-8 pr-3 py-1 text-[1rem] h-10 border-2 border-secondary rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:ring-2 focus:border-none sm:text-sm"
               />
             </div>
           </div>
 
           {/* Password Input */}
-          <div className="">
-            <label htmlFor="password" className="block text-[1rem] font-semibold pl-2 text-gray-700">
+          <div className="w-full">
+            <label htmlFor="password" className="block text-[1rem] font-semibold pl-2 text-primary">
               Password
             </label>
             <div className="relative flex items-center">
-              <Lock size={20} className="absolute left-2 text-sky-400" />
+              <Lock size={20} className="absolute left-2 text-accent" />
               <input
                 id="password"
                 name="password"
@@ -121,7 +121,7 @@ const Signup = () => {
                 placeholder="Enter password at least 6 character long"
                 value={formData.password}
                 onChange={handleInputChange}
-                className="block w-full pl-8 pr-10 py-1 text-[1rem] h-10 border-2 border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sky-500 focus:ring-2 focus:border-none sm:text-sm"
+                className="block w-full text-black font-semibold pl-8 pr-3 py-1 text-[1rem] h-10 border-2 border-secondary rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:ring-2 focus:border-none sm:text-sm"
               />
               <button
                 type="button"
@@ -129,37 +129,31 @@ const Signup = () => {
                 className="absolute right-2 focus:outline-none"
               >
                 {showPassword ? (
-                  <EyeOff size={20} className="text-sky-400" />
+                  <EyeOff size={20} className="text-accent" />
                 ) : (
-                  <Eye size={20} className="text-sky-400" />
+                  <Eye size={20} className="text-accent" />
                 )}
               </button>
             </div>
           </div>
 
           {/* Submit Button */}
-          <div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-            >
-              {loading ? (
-                <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
-              ) : (
-                "Sign up"
-              )}
-            </button>
-          </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-[60%] text-white bg-primary hover:bg-primary/80 font-bold rounded-md text-xl sm:text-lg px-5 py-1.5 text-center"
+          >
+            Sign Up
+          </button>
         </form>
         <Link
           to="/login"
-          className="font-medium text-lg text-sky-400 hover:text-sky-600 w-full flex justify-center mt-2 border-t-2 pt-1 border-black"
+          className="font-medium text-lg text-sky-400 hover:text-sky-600 w-full flex justify-center mt-4 border-t-2 pt-2 border-black"
         >
           Login to your existing account
         </Link>
       </div>
-      <div className="mt-4 flex flex-col items-center gap-3 sm:mx-auto sm:w-full sm:max-w-md">
+      <div className="mt-4 flex flex-col items-center gap-3 w-[60%] sm:w-[40%]">
         <button onClick={googleSignUp} className='flex gap-4 justify-center items-center bg-white rounded-md w-full h-12'>
           <img src={Google} alt="Google Icon" className='size-6' />
           <p className="block text-[1rem] font-bold text-gray-700">Login with Google</p>

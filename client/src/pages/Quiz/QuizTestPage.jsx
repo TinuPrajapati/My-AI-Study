@@ -1,35 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Clock, ArrowRight, ArrowLeft, CheckCircle } from 'lucide-react';
-import useAuthStore from '../Store/useAuthStore';
-import Instance from '../api/Instance';
-import useRecordStore from '../Store/useRecordStore';
+import { Clock, ArrowRight, ArrowLeft, CheckCircle, Sparkles } from 'lucide-react';
+import useAuthStore from '../../Store/useAuthStore';
+import Instance from '../../api/Instance';
+import useRecordStore from '../../Store/useRecordStore';
+import useTestStore from '../../Store/useTestStore';
 
-const TestPage = () => {
+const QuizTestPage = () => {
   const { id } = useParams();
   const { authUser: user } = useAuthStore();
+  const {getTest,test} = useTestStore();
   const { createRecrd } = useRecordStore();
   const navigate = useNavigate();
-
-  const [test, setTest] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState([]);
+  const [answers, setAnswers] = useState([]);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const [score, setScore] = useState(0);
-
-  const getTest = async (id) => {
-    try {
-      const res = await Instance.get(`/test/${id}`,{withCredentials:true});
-      setTest(res.data.test);
-      // Initialize timeLeft once test is loaded
-      if (res.data.test.duration) {
-        setTimeLeft(res.data.test.duration * 60);
-      }
-    } catch (error) {
-      console.log(error.response.data.message)
-    }
-  };
 
   useEffect(() => {
     if (id) {
@@ -38,10 +25,16 @@ const TestPage = () => {
   }, [id]);
 
   useEffect(() => {
+    if(test !=null){
+      setTimeLeft(test.duration*60);
+    }
+  },[test])
+
+  useEffect(() => {
     // Only set up if test is loaded and has questions
     if (test && test.questions && test.questions.length > 0) {
       // Initialize selected answers array
-      setSelectedAnswers(new Array(test.questions.length).fill(-1));
+      setAnswers(new Array(test.questions.length).fill(-1));
 
       // Set up timer
       const timer = setInterval(() => {
@@ -58,18 +51,20 @@ const TestPage = () => {
       return () => clearInterval(timer);
     } else if (test && (!test.questions || test.questions.length === 0)) {
       // If no questions are available, navigate back
-      navigate('/dashboard');
+      navigate('/quiz');
     }
   }, [test, navigate]);
 
   if (!test || !user) {
-    return <div>Loading...</div>;
+    return <div className='h-[80vh] flex justify-center items-center'>
+      <Sparkles className='size-20 animate-spin'/>
+    </div>;
   }
 
   const currentQuestion = test.questions[currentQuestionIndex];
 
   const handleAnswerSelect = (index) => {
-    setSelectedAnswers((prev) => {
+    setAnswers((prev) => {
       const updated = [...prev];
       updated[currentQuestionIndex] = index;
       return updated;
@@ -92,10 +87,14 @@ const TestPage = () => {
     // Calculate score
     let correctAnswers = 0;
     test.questions.forEach((question, index) => {
-      if (question.options[selectedAnswers[index]] === question.answer) {
+      if (question.options[answers[index]] === question.answer) {
         correctAnswers++;
       }
     });
+    const completeTime = ((test.duration*60-timeLeft)/60).toFixed(2);
+    console.log("Select Answers",answers);
+    console.log("Time Left",completeTime);
+    console.log("Score",correctAnswers);
 
     setScore(correctAnswers);
     setIsCompleted(true);
@@ -104,6 +103,8 @@ const TestPage = () => {
     createRecrd({
       testId: test._id,
       score: correctAnswers,
+      answers: answers,
+      completeTime: completeTime
     });
   };
 
@@ -148,13 +149,12 @@ const TestPage = () => {
               </div>
               <div className="h-4 bg-gray-200 rounded-full overflow-hidden">
                 <div
-                  className={`h-full ${
-                    (score / test.questions.length) >= 0.7
+                  className={`h-full ${(score / test.questions.length) >= 0.7
                       ? 'bg-green-500'
                       : (score / test.questions.length) >= 0.4
-                      ? 'bg-yellow-500'
-                      : 'bg-red-500'
-                  }`}
+                        ? 'bg-yellow-500'
+                        : 'bg-red-500'
+                    }`}
                   style={{
                     width: `${(score / test.questions.length) * 100}%`,
                   }}
@@ -165,8 +165,8 @@ const TestPage = () => {
               <h2 className="text-xl font-semibold mb-4">Detailed Answers</h2>
               {test.questions.map((question, index) => {
                 const userAnswer =
-                  selectedAnswers[index] !== -1
-                    ? question.options[selectedAnswers[index]]
+                  answers[index] !== -1
+                    ? question.options[answers[index]]
                     : null;
                 const isCorrect = userAnswer === question.answer;
                 return (
@@ -183,9 +183,8 @@ const TestPage = () => {
                       Your Answer:{' '}
                       {userAnswer ? (
                         <span
-                          className={`font-bold ${
-                            isCorrect ? 'text-green-500' : 'text-red-500'
-                          }`}
+                          className={`font-bold ${isCorrect ? 'text-green-500' : 'text-red-500'
+                            }`}
                         >
                           {userAnswer}
                         </span>
@@ -255,21 +254,19 @@ const TestPage = () => {
               <div
                 key={index}
                 onClick={() => handleAnswerSelect(index)}
-                className={`p-3 border rounded-md cursor-pointer transition-colors ${
-                  selectedAnswers[currentQuestionIndex] === index
+                className={`p-3 border rounded-md cursor-pointer transition-colors ${answers[currentQuestionIndex] === index
                     ? 'border-indigo-500 bg-indigo-50'
                     : 'border-gray-300 hover:bg-gray-50'
-                }`}
+                  }`}
               >
                 <div className="flex items-center">
                   <div
-                    className={`w-5 h-5 rounded-full border flex items-center justify-center mr-3 ${
-                      selectedAnswers[currentQuestionIndex] === index
+                    className={`w-5 h-5 rounded-full border flex items-center justify-center mr-3 ${answers[currentQuestionIndex] === index
                         ? 'border-indigo-500 bg-indigo-500 text-white'
                         : 'border-gray-400'
-                    }`}
+                      }`}
                   >
-                    {selectedAnswers[currentQuestionIndex] === index && (
+                    {answers[currentQuestionIndex] === index && (
                       <span className="text-xs">✓</span>
                     )}
                   </div>
@@ -311,4 +308,4 @@ const TestPage = () => {
   );
 };
 
-export default TestPage;
+export default QuizTestPage;

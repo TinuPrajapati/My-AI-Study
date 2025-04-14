@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, X } from 'lucide-react';
-import { PROBLEM_TOPICS, PROGRAMMING_LANGUAGES, problems } from '../data/problems.js';
+import { PROBLEM_TOPICS, PROGRAMMING_LANGUAGES } from '../data/problems.js';
 import usePracticeStore from '../Store/usePracticeStore.js';
+import Input from './Form/Input.jsx';
+import Select from './Form/Select.jsx';
 
 export default function CreateProblem({ setShow }) {
     const { createProblem, isLoading } = usePracticeStore();
@@ -12,6 +14,10 @@ export default function CreateProblem({ setShow }) {
         level: '',
         language: ''
     });
+
+    const handleChange = (e) => {
+        setForm({ ...form, [e.target.id]: e.target.value });
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -40,14 +46,7 @@ export default function CreateProblem({ setShow }) {
                         initial={{ x: 20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ duration: 1, delay: 1.4 }}>
-                        <label className="block text-gray-700 pl-4 font-bold">Topic</label>
-                        <input
-                            type="text"
-                            className="w-full px-4 h-10 border-2 text-gray-900 border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-primary-400 focus:border-none"
-                            value={form.topic}
-                            placeholder='Enter Topic Name'
-                            onChange={e => setForm(prev => ({ ...prev, topic: e.target.value }))}
-                        />
+                        <Input text="Topic" id="topic" value={form.topic} change={handleChange} placeholder="Enter Topic Name" />
                     </motion.div>
 
                     <motion.div
@@ -55,17 +54,7 @@ export default function CreateProblem({ setShow }) {
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ duration: 1, delay: 1.2 }}
                     >
-                        <label className="block text-gray-700 pl-4 font-bold">Level</label>
-                        <select
-                            className="w-full px-4 h-10 text-gray-900 border-2 border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-primary-400 focus:border-none"
-                            value={form.level}
-                            onChange={e => setForm(prev => ({ ...prev, level: e.target.value }))}
-                        >
-                            <option value="">Choose Level</option>
-                            <option value="Easy">Easy</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Hard">Hard</option>
-                        </select>
+                        <Select text="Level" id="level" value={form.level} change={handleChange} option={['Easy', 'Medium', 'Hard']} />
                     </motion.div>
 
                     <motion.div
@@ -73,7 +62,7 @@ export default function CreateProblem({ setShow }) {
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ duration: 1, delay: 2 }}
                     >
-                        <label className="block text-gray-700 pl-4 font-bold">Programming Language</label>
+                        {/* <label className="block text-gray-700 pl-4 font-bold">Programming Language</label>
                         <select
                             className="w-full px-4 h-10 text-gray-900 border-2 border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-primary-400 focus:border-none"
                             value={form.language}
@@ -83,7 +72,8 @@ export default function CreateProblem({ setShow }) {
                             {PROGRAMMING_LANGUAGES.map(lang => (
                                 <option key={lang} value={lang.toLocaleLowerCase()}>{lang}</option>
                             ))}
-                        </select>
+                        </select> */}
+                        <Select text="Programming Language" id="language" value={form.language} change={handleChange} option={PROGRAMMING_LANGUAGES} />
                     </motion.div>
 
                     <motion.div
