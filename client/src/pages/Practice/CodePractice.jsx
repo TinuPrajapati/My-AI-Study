@@ -66,7 +66,7 @@ function CodePracticePage() {
             <p>Create Problem</p>
           </button>
           <button
-            // onClick={() => openDialog(setShowHistory)}
+            onClick={() => openDialog(setShowHistory)}
             className='flex items-center gap-1 px-4 py-1 bg-secondary font-bold text-white rounded-md'
           >
             <History />

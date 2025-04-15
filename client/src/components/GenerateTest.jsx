@@ -22,7 +22,7 @@ const GenerateTest = ({ onClose }) => {
     }
     const handleGenerateTest = (e) => {
         e.preventDefault();
-        generate(formData, setShowForm);
+        generate(formData, onClose);
     };
     return (
         <div className="fixed top-0 left-0 w-[100vw] h-[100vh] bg-sky-400/40 flex justify-center items-center">
