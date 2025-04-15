@@ -20,7 +20,7 @@ const Router = () => {
         <Route path='' element={<LandingPage />} />
         <Route path="/login" element={authUser == null ? <Login /> : <Navigate to="/quiz" />} />
         <Route path="/signup" element={authUser == null ? <Signup /> : <Navigate to="/quiz" />} />
-        <Route path='/quiz' element={authUser == null ? <Navigate to="/login" /> : <QuizPage />} />
+        <Route path='/quiz' element={<QuizPage /> } />
         <Route path='/test/:id' element={<QuizTestPage />} />
         <Route path='/quiz_result/:id' element={<QuizResult />} />
         <Route path='/practice' element={<CodePracticePage />} />
