@@ -9,13 +9,14 @@ const useRecordStore = create((set, get) => ({
     isError: false,
 
     // Register User
-    createRecrd: async (data) => {
+    createRecrd: async (data,naviagte) => {
         set({ isLoading: true });
 
         try {
             const res = await Instance.post("/record/create", data,{withCredentials:true});
             toast.success(res.data.message)
             get().allRecord();
+            naviagte(`/quiz_result/${res.data.id}`)
         } catch (error) {
             console.log(error.response.data.message)
         } finally {

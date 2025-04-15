@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, X } from 'lucide-react';
-import { PROBLEM_TOPICS, PROGRAMMING_LANGUAGES } from '../data/problems.js';
-import usePracticeStore from '../Store/usePracticeStore.js';
-import Input from './Form/Input.jsx';
-import Select from './Form/Select.jsx';
+import {  PROGRAMMING_LANGUAGES } from '../../data/problems.js';
+import usePracticeStore from '../../Store/usePracticeStore.js';
+import Input from '../Form/Input.jsx';
+import Select from '../Form/Select.jsx';
 
 export default function CreateProblem({ setShow }) {
     const { createProblem, isLoading } = usePracticeStore();
@@ -39,7 +39,7 @@ export default function CreateProblem({ setShow }) {
                     transition={{ duration: 1, delay: 1 }}
                     className="flex items-center justify-between w-full px-4 h-[10%]">
                     <h1 className="text-3xl font-bold text-secondary">Create Problem</h1>
-                    <button onClick={() => setShow(false)}><X className='size-6 ' /></button>
+                    <button onClick={setShow}><X className='size-6 ' /></button>
                 </motion.div>
                 <form onSubmit={handleSubmit} className="h-[90%] flex flex-col justify-center gap-4">
                     <motion.div

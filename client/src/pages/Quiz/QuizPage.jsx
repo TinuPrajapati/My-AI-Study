@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { BookOpen, Clock, CheckCircle, PlusCircle, CheckCircle2, Notebook } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { BookOpen, Clock, CheckCircle, PlusCircle, Notebook } from 'lucide-react';
 import { motion } from "framer-motion";
 import useAuthStore from '../../Store/useAuthStore';
 import useTestStore from '../../Store/useTestStore';
@@ -9,7 +9,6 @@ import GenerateTest from '../../components/GenerateTest';
 import QuizHistory from '../../components/QuizHistory';
 
 const QuizPage = () => {
-  const navigate = useNavigate();
   const [showForm, setShowForm] = useState(false);
   const { authUser } = useAuthStore();
   const { show, Tests } = useTestStore();
@@ -19,6 +18,19 @@ const QuizPage = () => {
     const difficultyMatch = level === 'All' || problem.level === level;
     return difficultyMatch;
   });
+
+  function openDialog() {
+   setShowForm(true);
+    // Disable body scroll
+    document.body.style.overflow = 'hidden';
+  }
+
+  // Function to close the dialog
+  function closeDialog() {
+    setShowForm(false);
+    // Enable body scroll
+    document.body.style.overflow = 'auto';
+  }
 
   // Calculate stats
   const totalTestsTaken = records.length;
@@ -39,7 +51,7 @@ const QuizPage = () => {
   return (
     <div className="min-h-[80vh] bg-secondary/25 p-4 flex flex-col gap-4">
       {showForm && (
-        <GenerateTest setShowForm={setShowForm} />
+        <GenerateTest onClose={closeDialog} />
       )}
       <motion.div
         initial={{ y: -20, opacity: 0 }}
@@ -104,7 +116,7 @@ const QuizPage = () => {
           <div className='flex gap-4 items-center'>
 
             <button
-              onClick={() => setShowForm(true)}
+              onClick={openDialog}
               className="flex items-center justify-center w-full md:w-auto px-6 py-1 border-2 border-secondary text-secondary font-bold text-lg rounded-md hover:bg-secondary hover:text-white transition-colors active:scale-90 duration-200"
             >
               <PlusCircle size={25} className="mr-2" />

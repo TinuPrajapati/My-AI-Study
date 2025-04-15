@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Bot, Plus } from 'lucide-react';
-import CreateProblem from '../../components/CreateProblem';
+import { Bot, History, Plus } from 'lucide-react';
 import usePracticeStore from '../../Store/usePracticeStore';
+import CodeHistory from '../../components/Code Practice/CodeHistory';
+import CreateProblem from '../../components/Code Practice/CreateProblem';
+import { closeDialog, openDialog } from '../../components/Component';
 
 function CodePracticePage() {
   const [show, setShow] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
   const { problems, getProblems } = usePracticeStore();
   const [topic, settopic] = useState('All');
   const [language, setlanguage] = useState('All');
@@ -15,22 +18,6 @@ function CodePracticePage() {
   const topics = Array.from(new Set(problems.map(problem => problem.topic)));
   const languages = Array.from(new Set(problems.map(problem => problem.language)));
 
-  const PROBLEM_TOPICS = [
-    "Arrays",
-    "Strings",
-    "LinkedList",
-    "Trees",
-    "Dynamic Programming",
-    "Debugging"
-  ];
-
-  const PROGRAMMING_LANGUAGES = [
-    "JavaScript",
-    "TypeScript",
-    "Python",
-    "Java",
-    "C++"
-  ];
   const filteredProblems = problems.filter(problem => {
     const topicMatch = topic === 'All' || problem.topic === topic;
     const languageMatch = language === 'All' || problem.language === language;
@@ -38,13 +25,26 @@ function CodePracticePage() {
     return topicMatch && languageMatch && difficultyMatch;
   });
 
+  // function openDialog() {
+  //   setShowHistory(true)
+  //   // Disable body scroll
+  //   document.body.style.overflow = 'hidden';
+  // }
+
+  // function closeDialog() {
+  //   setShowHistory(false)
+  //   // Enable body scroll
+  //   document.body.style.overflow = 'auto';
+  // }
+
   useEffect(() => {
     getProblems();
   }, []);
 
   return (
     <div className="px-8 py-4 bg-secondary/25 min-h-[80vh]">
-      {show && <CreateProblem setShow={setShow} />}
+      {show && <CreateProblem setShow={() => closeDialog(setShow)} />}
+      {showHistory && <CodeHistory onClose={() => closeDialog(setShowHistory)} isOpen={showHistory} />}
       <motion.div
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -60,10 +60,19 @@ function CodePracticePage() {
             Code Problems By AI
           </h1>
         </motion.div>
-        <button onClick={() => setShow(true)} className='flex items-center gap-1 px-4 py-1 bg-secondary font-bold text-white rounded-md'>
-          <Plus />
-          <p>Create Problem</p>
-        </button>
+        <div className='flex items-center gap-2'>
+          <button onClick={() => openDialog(setShow)} className='flex items-center gap-1 px-4 py-1 bg-secondary font-bold text-white rounded-md'>
+            <Plus />
+            <p>Create Problem</p>
+          </button>
+          <button
+            // onClick={() => openDialog(setShowHistory)}
+            className='flex items-center gap-1 px-4 py-1 bg-secondary font-bold text-white rounded-md'
+          >
+            <History />
+            <p>View History</p>
+          </button>
+        </div>
       </motion.div>
 
       <motion.div

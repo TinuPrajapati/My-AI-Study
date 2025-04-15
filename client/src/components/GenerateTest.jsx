@@ -6,7 +6,7 @@ import Input from "./Form/Input";
 import Select from "./Form/Select";
 import Number from "./Form/Number";
 
-const GenerateTest = ({ setShowForm }) => {
+const GenerateTest = ({ onClose }) => {
     const { generate, isLoading, } = useTestStore();
     const [formData, setFormData] = useState(
         {
@@ -44,7 +44,7 @@ const GenerateTest = ({ setShowForm }) => {
                             Generate Custom Test
                         </h2>
                     </div>
-                    <button onClick={() => setShowForm(false)}><X className="w-8 h-8 text-black" /></button>
+                    <button onClick={onClose}><X className="w-8 h-8 text-black" /></button>
                 </motion.div>
 
                 <form onSubmit={handleGenerateTest} className=" px-8 flex flex-col justify-between h-[90%] pt-4">

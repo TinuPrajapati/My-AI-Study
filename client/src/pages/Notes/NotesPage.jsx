@@ -16,6 +16,18 @@ function NotesPage() {
         setPrompt('');
     };
 
+    // Function to open the dialog
+    function openDialog(note) {
+        setShow(note._id, setShow)
+
+        // Disable body scroll
+        document.body.style.overflow = 'hidden';
+    }
+
+    // Function to close the dialog
+   
+
+
     useEffect(() => {
         getAllNotes();
     }, [])
@@ -82,7 +94,7 @@ function NotesPage() {
                         className={`p-4 rounded-md flex justify-between items-center bg-white border-l-4 border-primary shadow-md shadow-accent/50`}
                     >
                         <h1 className='text-lg font-bold'>{note.topic}</h1>
-                        <button onClick={() => setShow(note._id, setShow)} className='hover:border-b-2 hover:text-primary-400 hover:border-primary-400 duration-200' >View</button>
+                        <button onClick={() => openDialog(note)} className='hover:border-b-2 hover:text-primary-400 hover:border-primary-400 duration-200' >View</button>
                     </motion.div>
                 ))}
                 {notes.length === 0 && (

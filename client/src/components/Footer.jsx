@@ -87,7 +87,7 @@ export default function Footer() {
                             <input
                                 type="email"
                                 placeholder="Your Email"
-                                className="w-full px-4 py-2 h-12 bg-white text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                                className="w-full px-4 h-10 border-2 bg-white text-gray-900 border-accent rounded-md outline-none focus:ring-2 focus:ring-primary-400 focus:border-none"
                             />
                             {formData.email && (
                                 <span className="text-red-500 text-sm">Please enter a valid email</span>
@@ -96,7 +96,7 @@ export default function Footer() {
                         <div>
                             <textarea
                                 placeholder="Your Message"
-                                className="w-full px-4 py-2 bg-white text-gray-900 placeholder:text-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                                className="w-full px-4 py-1 border-2 bg-white text-gray-900 border-accent rounded-md outline-none focus:ring-2 focus:ring-primary-400 focus:border-none"
                                 rows={3}
                             />
                             {formData.message && (

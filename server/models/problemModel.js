@@ -34,6 +34,11 @@ const problem = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    status: {
+      type: String,
+      required: true,
+      default: "pending",
+    }
   },
   {
     timestamps: true,

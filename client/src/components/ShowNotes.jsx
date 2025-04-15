@@ -4,8 +4,16 @@ import useNotesStore from '../Store/useNotesStroe';
 import { Trash2, X } from 'lucide-react';
 
 const ShowNotes = ({ setShow, show }) => {
-    const { notes,deleteNote } = useNotesStore();
+    const { notes, deleteNote } = useNotesStore();
     const note = notes.filter((note) => note._id === show)[0];
+
+    function closeDialog() {
+        // Hide the dialog
+        setShow('')
+
+        // Enable body scroll
+        document.body.style.overflow = 'auto';
+    }
     const handleNote = (id) => {
         setShow('');
         deleteNote(id)
@@ -22,7 +30,7 @@ const ShowNotes = ({ setShow, show }) => {
                     <h1 className="text-3xl font-bold text-secondary">{note?.topic}</h1>
                     <div className='flex items-center gap-2'>
                         <button onClick={() => handleNote(note._id)}><Trash2 className='size-5 text-red-500' /></button>
-                        <button onClick={() => setShow('')}><X className='size-6 ' /></button>
+                        <button onClick={closeDialog}><X className='size-6 ' /></button>
                     </div>
                 </div>
                 <div dangerouslySetInnerHTML={{ __html: note?.notes }} />

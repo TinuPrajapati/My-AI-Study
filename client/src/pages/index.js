@@ -16,4 +16,7 @@ import ProblemPage from "./Practice/ProblemPage";
 // Notes Folder
 import NotesPage from "./Notes/NotesPage";
 
-export { LandingPage, Login, Signup, QuizPage, QuizTestPage,QuizResult, CodePracticePage, ProblemPage,NotesPage };
+// Profile Folder
+import ProfilePage from "./Profile/ProfilePage";
+
+export { LandingPage, Login, Signup, QuizPage, QuizTestPage,QuizResult, CodePracticePage, ProblemPage,NotesPage,ProfilePage };

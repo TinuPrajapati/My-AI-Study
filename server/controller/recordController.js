@@ -6,7 +6,7 @@ export const createRecord = async(req,res)=>{
         const {testId,score,answers,completeTime} = req.body;
         const record = new Record({testId,userId,score,answers,completeTime});
         await record.save();
-        res.status(201).json({message:"Record Create Successfully"});
+        res.status(201).json({message:"Record Create Successfully",id:record._id});
     } catch (error) {
         console.log("Error come in createRecord route:",error);
         res.status(500).json({ message: "Internal Server Error" });

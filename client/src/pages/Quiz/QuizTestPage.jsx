@@ -9,14 +9,12 @@ import useTestStore from '../../Store/useTestStore';
 const QuizTestPage = () => {
   const { id } = useParams();
   const { authUser: user } = useAuthStore();
-  const {getTest,test} = useTestStore();
+  const { getTest, test } = useTestStore();
   const { createRecrd } = useRecordStore();
   const navigate = useNavigate();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [timeLeft, setTimeLeft] = useState(0);
-  const [isCompleted, setIsCompleted] = useState(false);
-  const [score, setScore] = useState(0);
 
   useEffect(() => {
     if (id) {
@@ -25,10 +23,10 @@ const QuizTestPage = () => {
   }, [id]);
 
   useEffect(() => {
-    if(test !=null){
-      setTimeLeft(test.duration*60);
+    if (test != null) {
+      setTimeLeft(test.duration * 60);
     }
-  },[test])
+  }, [test])
 
   useEffect(() => {
     // Only set up if test is loaded and has questions
@@ -57,7 +55,7 @@ const QuizTestPage = () => {
 
   if (!test || !user) {
     return <div className='h-[80vh] flex justify-center items-center'>
-      <Sparkles className='size-20 animate-spin'/>
+      <Sparkles className='size-20 animate-spin' />
     </div>;
   }
 
@@ -85,19 +83,13 @@ const QuizTestPage = () => {
 
   const handleTestCompletion = () => {
     // Calculate score
+    const completeTime = ((test.duration * 60 - timeLeft) / 60).toFixed(2);
     let correctAnswers = 0;
     test.questions.forEach((question, index) => {
       if (question.options[answers[index]] === question.answer) {
         correctAnswers++;
       }
     });
-    const completeTime = ((test.duration*60-timeLeft)/60).toFixed(2);
-    console.log("Select Answers",answers);
-    console.log("Time Left",completeTime);
-    console.log("Score",correctAnswers);
-
-    setScore(correctAnswers);
-    setIsCompleted(true);
 
     // Save test result
     createRecrd({
@@ -105,7 +97,7 @@ const QuizTestPage = () => {
       score: correctAnswers,
       answers: answers,
       completeTime: completeTime
-    });
+    }, navigate);
   };
 
   const formatTime = (seconds) => {
@@ -114,109 +106,8 @@ const QuizTestPage = () => {
     return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
   };
 
-  const progressPercentage =
-    ((currentQuestionIndex + 1) / test.questions.length) * 100;
+  const progressPercentage = ((currentQuestionIndex + 1) / test.questions.length) * 100;
 
-  if (isCompleted) {
-    return (
-      <div className="min-h-[80vh] bg-secondary/25 text-black py-8">
-        <div className="container mx-auto px-4 max-w-3xl">
-          <div className="bg-white rounded-lg shadow-md p-8">
-            <div className="flex justify-center mb-6">
-              <CheckCircle size={64} className="text-green-500" />
-            </div>
-            <h1 className="text-3xl font-bold text-center mb-2">
-              Test Completed!
-            </h1>
-            <p className="text-center text-gray-600 mb-8">
-              You've completed the {test.title} test.
-            </p>
-            <div className="bg-gray-50 rounded-lg p-6 mb-8">
-              <h2 className="text-xl font-semibold mb-4">Your Results</h2>
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="bg-white p-4 rounded-md shadow-sm">
-                  <p className="text-gray-500 text-sm">Score</p>
-                  <p className="text-2xl font-bold">
-                    {score}/{test.questions.length}
-                  </p>
-                </div>
-                <div className="bg-white p-4 rounded-md shadow-sm">
-                  <p className="text-gray-500 text-sm">Percentage</p>
-                  <p className="text-2xl font-bold">
-                    {((score / test.questions.length) * 100).toFixed(1)}%
-                  </p>
-                </div>
-              </div>
-              <div className="h-4 bg-gray-200 rounded-full overflow-hidden">
-                <div
-                  className={`h-full ${(score / test.questions.length) >= 0.7
-                      ? 'bg-green-500'
-                      : (score / test.questions.length) >= 0.4
-                        ? 'bg-yellow-500'
-                        : 'bg-red-500'
-                    }`}
-                  style={{
-                    width: `${(score / test.questions.length) * 100}%`,
-                  }}
-                ></div>
-              </div>
-            </div>
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4">Detailed Answers</h2>
-              {test.questions.map((question, index) => {
-                const userAnswer =
-                  answers[index] !== -1
-                    ? question.options[answers[index]]
-                    : null;
-                const isCorrect = userAnswer === question.answer;
-                return (
-                  <div key={index} className="mb-6 border p-4 rounded-md">
-                    <h3 className="text-lg font-bold">
-                      {`Q${index + 1}: ${question.question}`}
-                    </h3>
-                    {question.description && (
-                      <p className="text-sm text-gray-600 mb-2">
-                        Description: {question.description}
-                      </p>
-                    )}
-                    <p className="text-sm">
-                      Your Answer:{' '}
-                      {userAnswer ? (
-                        <span
-                          className={`font-bold ${isCorrect ? 'text-green-500' : 'text-red-500'
-                            }`}
-                        >
-                          {userAnswer}
-                        </span>
-                      ) : (
-                        <span className="font-bold text-gray-500">
-                          Not Answered
-                        </span>
-                      )}
-                    </p>
-                    <p className="text-sm">
-                      Correct Answer:{' '}
-                      <span className="font-bold text-green-600">
-                        {question.answer}
-                      </span>
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="flex justify-center">
-              <button
-                onClick={() => navigate('/quiz')}
-                className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
-              >
-                Return to Dashboard
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-[80vh] bg-secondary/25 text-black py-8">
@@ -255,15 +146,15 @@ const QuizTestPage = () => {
                 key={index}
                 onClick={() => handleAnswerSelect(index)}
                 className={`p-3 border rounded-md cursor-pointer transition-colors ${answers[currentQuestionIndex] === index
-                    ? 'border-indigo-500 bg-indigo-50'
-                    : 'border-gray-300 hover:bg-gray-50'
+                  ? 'border-indigo-500 bg-indigo-50'
+                  : 'border-gray-300 hover:bg-gray-50'
                   }`}
               >
                 <div className="flex items-center">
                   <div
                     className={`w-5 h-5 rounded-full border flex items-center justify-center mr-3 ${answers[currentQuestionIndex] === index
-                        ? 'border-indigo-500 bg-indigo-500 text-white'
-                        : 'border-gray-400'
+                      ? 'border-indigo-500 bg-indigo-500 text-white'
+                      : 'border-gray-400'
                       }`}
                   >
                     {answers[currentQuestionIndex] === index && (
