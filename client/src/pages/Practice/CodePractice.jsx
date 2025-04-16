@@ -25,18 +25,6 @@ function CodePracticePage() {
     return topicMatch && languageMatch && difficultyMatch;
   });
 
-  // function openDialog() {
-  //   setShowHistory(true)
-  //   // Disable body scroll
-  //   document.body.style.overflow = 'hidden';
-  // }
-
-  // function closeDialog() {
-  //   setShowHistory(false)
-  //   // Enable body scroll
-  //   document.body.style.overflow = 'auto';
-  // }
-
   useEffect(() => {
     getProblems();
   }, []);

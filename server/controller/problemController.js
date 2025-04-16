@@ -1,15 +1,19 @@
 import Problem from "../models/problemModel.js";
 import checkTest from "../utils/checkProblem.js";
-import generateTest from "../utils/generateProblem.js";
+import checkCodeTopic from "../utils/generateProblem.js";
 
 const createProblem = async (req, res) => {
   try {
     const { userId } = req.user;
     const { topic, level, language } = req.body;
-    const problem = await generateTest(req.body);
-    const newProblem = await new Problem({ ...problem,topic, level, language, createdBy: userId });
-    newProblem.save();
-    res.status(201).json({ message: "Problem Create Successfully" });
+    const problem = await checkCodeTopic(req.body);
+    if (problem.response === "Yes") {
+      const newProblem = await new Problem({ ...problem.problem,topic, level, language, createdBy: userId });
+      newProblem.save();
+      res.status(201).json({ message: "Problem Create Successfully" });
+    }else{
+      res.status(500).json({ message: "Please Enter Valid Topic" });
+    }
   } catch (error) {
     console.log("Error come in createProblem route:", error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -18,7 +22,7 @@ const createProblem = async (req, res) => {
 const getAllProblems = async (req, res) => {
   try {
     const { userId } = req.user;
-    const problems = await Problem.find({createdBy: userId});
+    const problems = await Problem.find({ createdBy: userId });
     res.status(200).json({ problems });
   } catch (error) {
     console.log("Error come in createProblem route:", error);
@@ -47,6 +51,4 @@ const checkProblem = async (req, res) => {
   }
 };
 
-
-
-export { createProblem, getAllProblems, problem,checkProblem };
+export { createProblem, getAllProblems, problem, checkProblem };

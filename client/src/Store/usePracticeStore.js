@@ -25,7 +25,7 @@ const usePracticeStore = create((set, get) => ({
             toast.success(res.data.message);
             get().getProblems();
         } catch (error) {
-            console.log(error.response.data.message);
+            toast.error(error.response.data.message);
         } finally {
             set({ isLoading: false });
         }

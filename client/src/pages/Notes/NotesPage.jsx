@@ -23,11 +23,7 @@ function NotesPage() {
         // Disable body scroll
         document.body.style.overflow = 'hidden';
     }
-
-    // Function to close the dialog
-   
-
-
+    
     useEffect(() => {
         getAllNotes();
     }, [])

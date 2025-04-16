@@ -62,17 +62,6 @@ export default function CreateProblem({ setShow }) {
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ duration: 1, delay: 2 }}
                     >
-                        {/* <label className="block text-gray-700 pl-4 font-bold">Programming Language</label>
-                        <select
-                            className="w-full px-4 h-10 text-gray-900 border-2 border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-primary-400 focus:border-none"
-                            value={form.language}
-                            onChange={e => setForm(prev => ({ ...prev, language: e.target.value }))}
-                        >
-                            <option value="">Choose Language </option>
-                            {PROGRAMMING_LANGUAGES.map(lang => (
-                                <option key={lang} value={lang.toLocaleLowerCase()}>{lang}</option>
-                            ))}
-                        </select> */}
                         <Select text="Programming Language" id="language" value={form.language} change={handleChange} option={PROGRAMMING_LANGUAGES} />
                     </motion.div>
 
@@ -84,7 +73,7 @@ export default function CreateProblem({ setShow }) {
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="bg-accent font-bold text-white px-6 py-2 rounded-md"
+                            className="bg-primary font-bold text-white px-6 py-2 rounded-md"
                         >
                             {isLoading ? (
                                 <Sparkles className="w-5 h-5 animate-spin" />

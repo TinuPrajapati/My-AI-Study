@@ -1,23 +1,28 @@
 import Test from "../models/testModel.js";
-import { generateQuestions } from "../utils/generateQuestions.js";
+import checkQuizTopic from "../utils/generateQuestions.js";
 
 export const createTest = async (req, res) => {
   const { userId } = req.user;
   const { topic, number, level, duration } = req.body;
 
   try {
-    const obj = await generateQuestions(topic, number, level);
-    const test = new Test({
-      title: topic,
-      questions: obj.questions,
-      description: obj.description,
-      createdBy: userId,
-      level,
-      duration,
-      number,
-    });
-    await test.save();
-    res.status(201).json({ message: "Test Create Successfully" });
+    const obj = await checkQuizTopic(topic, number, level);
+    // console.log(obj);
+    if(obj.response === "Yes") {
+      const test = new Test({
+        title: topic,
+        questions: obj.quiz.questions,
+        description: obj.quiz.description,
+        createdBy: userId,
+        level,
+        duration,
+        number,
+      });
+      await test.save();
+      res.status(201).json({ message: "Test Create Successfully" });
+    }else{
+      res.status(500).json({ message: "Please Enter Valid Topic" });
+    }
   } catch (error) {
     console.log("Error come in createTest route:", error);
     res.status(500).json({ message: "Internal Server Error" });

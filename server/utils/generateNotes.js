@@ -5,6 +5,31 @@ dotenv.config();
 const genAI = new GoogleGenerativeAI(`${process.env.GOOGLE_API_KEY}`);
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
+const checkTopic = async (topic) => {
+  const prompt =  `Check the given topic "${topic}" whether it is related to academic study, learning, or education topic or not. Send response "Yes" or "No" in JSON format. Like
+  {
+    "response": "value"
+  }
+  `;
+
+  const result = await model.generateContent(prompt);
+  const res = await result.response.text();
+  const startIndex = res.indexOf("{");
+  const endIndex = res.lastIndexOf("}");
+  const json = JSON.parse(res.substring(startIndex, endIndex + 1));
+  if (json.response === "Yes") {
+    const notes = await GenerateNotes(topic);
+    return {
+      notes,
+      response: "Yes",
+    };
+  }else{
+    return {
+      response: "No",
+    };
+  }
+};  
+
 const GenerateNotes = async (data) => {
   const prompt = `Generate comprehensive study notes based on the following details:
     - Topic: ${data}
@@ -28,4 +53,4 @@ const GenerateNotes = async (data) => {
   return json;
 };
 
-export default GenerateNotes;
+export default checkTopic;

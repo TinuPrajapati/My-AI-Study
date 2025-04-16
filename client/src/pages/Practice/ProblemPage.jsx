@@ -10,10 +10,8 @@ import ErrorAlert from '../../components/ErrorAlert';
 export default function ProblemPage() {
     const { id } = useParams();
     const { getSingleTest, problem, checkProblem, result } = usePracticeStore();
-    console.log(result)
     const [code, setCode] = useState(problem?.function_signature);
     const [show, setShow] = useState(false);
-    const [alertType, setAlertType] = useState(''); // 'success' or 'error'
 
     if (!problem) {
         return <div>Problem not found</div>;
