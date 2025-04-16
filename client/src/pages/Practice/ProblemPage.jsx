@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { motion } from "framer-motion";
 import { useParams } from 'react-router-dom';
 import Editor from '@monaco-editor/react';
-import { Play, Lightbulb } from 'lucide-react';
+import { Play, Lightbulb, Sparkles } from 'lucide-react';
 import usePracticeStore from '../../Store/usePracticeStore';
 import SuccessAlert from "../../components/SuccessAlert";
 import ErrorAlert from '../../components/ErrorAlert';
+import toast from "react-hot-toast";
 
 export default function ProblemPage() {
     const { id } = useParams();
-    const { getSingleTest, problem, checkProblem, result } = usePracticeStore();
+    const { getSingleTest, problem, checkProblem, result, isLoading } = usePracticeStore();
     const [code, setCode] = useState(problem?.function_signature);
     const [show, setShow] = useState(false);
 
@@ -18,14 +19,19 @@ export default function ProblemPage() {
     }
 
     const handleSubmit = () => {
-        checkProblem({
-            code: code,
-            description: problem.description,
-            function: problem.function_signature,
-            testCase: problem.test_cases,
-            topic: problem.topic,
-            level: problem.level
-        });
+        if (code === problem.function_signature) {
+            toast.error("Use your mind and not submit given code!")
+        }
+        else {
+            checkProblem({
+                code: code,
+                description: problem.description,
+                function: problem.function_signature,
+                testCase: problem.test_cases,
+                topic: problem.topic,
+                level: problem.level
+            });
+        }
     };
 
     useEffect(() => {
@@ -82,13 +88,20 @@ export default function ProblemPage() {
                         <button
                             onClick={handleSubmit}
                             className="bg-green-600 text-white px-4 py-2 rounded-md flex items-center space-x-1 hover:bg-green-700">
-                            <Play className="h-4 w-4" />
-                            <span>Run</span>
+                            {
+                                isLoading ? (
+                                    <Sparkles className='size-5 animate-spin' />
+                                ) :
+                                    (<>
+                                        <Play className="h-4 w-4" />
+                                        <span>Run</span>
+                                    </>)
+                            }
                         </button>
-                        <button className="bg-blue-600 text-white px-4 py-2 rounded-md flex items-center space-x-1 hover:bg-blue-700">
+                        {/* <button className="bg-blue-600 text-white px-4 py-2 rounded-md flex items-center space-x-1 hover:bg-blue-700">
                             <Lightbulb className="h-4 w-4" />
                             <span>Get Hint</span>
-                        </button>
+                        </button> */}
                     </div>
                     <p className='font-semibold text-primary bg-white px-4 py-1 rounded-md'>{problem?.language?.toUpperCase()}</p>
                 </div>
