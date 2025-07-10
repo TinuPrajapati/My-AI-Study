@@ -33,6 +33,10 @@
   --animate-loading: loading 4s ease-in-out infinite;
 }
 
+.radom{
+  animation : ;
+}
+
 @keyframes loading {
   0% {
     transform: translateX(-100%);

@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL,
     credentials: true,
   })
 );
@@ -41,12 +41,5 @@ app.use("/api/test", testRouter);
 app.use("/api/record", recordRouter);
 app.use("/api/notes", notesRouter);
 app.use("/api/problems", problemRouter);
-
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../client/dist")));
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../client", "dist", "index.html"));
-  });
-}
 
 app.listen(5000, () => console.log("Server running on port 5000"));
